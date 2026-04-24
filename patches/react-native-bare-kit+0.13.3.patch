@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-bare-kit/android/build.gradle b/node_modules/react-native-bare-kit/android/build.gradle
-index 0000000..1111111 100644
+index ba19d58..ee04aa3 100644
 --- a/node_modules/react-native-bare-kit/android/build.gradle
 +++ b/node_modules/react-native-bare-kit/android/build.gradle
 @@ -17,7 +17,7 @@ android {
