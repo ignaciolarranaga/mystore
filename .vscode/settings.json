@@ -8,8 +8,8 @@
     "autobase",
     "corestore",
     "hyperbee",
+    "mystore",
     "nativewind",
-    "pressable",
-    "splitmate"
+    "pressable"
   ]
 }
