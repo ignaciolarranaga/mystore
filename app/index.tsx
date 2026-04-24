@@ -11,7 +11,9 @@ import { COMMANDS } from "@/backend/commands";
 import ProductForm, { type ProductFormValues } from "@/components/ProductForm";
 import ProductItem from "@/components/ProductItem";
 import { ProductItem as Item } from "@/model/ProductItem";
+import { I18nProvider, useTranslate } from "@/utils/i18n";
 import bundle from "./app.bundle.mjs";
+import translations from "./translations";
 
 type BackendProduct = Omit<Item, "createdAt" | "updatedAt"> & {
   createdAt: string;
@@ -59,7 +61,8 @@ const parseBackendMessage = (response: unknown): BackendMessage => {
   return JSON.parse(response) as BackendMessage;
 };
 
-export default function App() {
+function StoreCatalogScreen() {
+  const t = useTranslate(translations);
   const [products, setProducts] = useState<Item[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,7 +75,7 @@ export default function App() {
   const fetchProducts = useCallback(async () => {
     const rpc = rpcRef.current;
     if (!rpc) {
-      throw new Error("Backend not ready");
+      throw new Error(t("Backend not ready"));
     }
 
     const request = rpc.request(COMMANDS.LIST_PRODUCTS);
@@ -81,7 +84,7 @@ export default function App() {
     const response = await request.reply("utf8");
     const message = parseBackendMessage(response);
     if (message.type !== "RESPONSE") {
-      throw new Error("Unexpected backend response");
+      throw new Error(t("Unexpected backend response"));
     }
 
     if (message.status === "ok") {
@@ -91,8 +94,8 @@ export default function App() {
       return;
     }
 
-    throw new Error(message.error?.message ?? "Backend error");
-  }, []);
+    throw new Error(message.error?.message ?? t("Backend error"));
+  }, [t]);
 
   useEffect(() => {
     const worklet = new Worklet();
@@ -113,7 +116,7 @@ export default function App() {
         setError(
           backendError instanceof Error
             ? backendError.message
-            : "Failed to read backend response",
+            : t("Failed to read backend response"),
         );
       } finally {
         if (isMountedRef.current) {
@@ -129,12 +132,12 @@ export default function App() {
       rpcRef.current = null;
       worklet.terminate();
     };
-  }, [fetchProducts]);
+  }, [fetchProducts, t]);
 
   const handleCreateProduct = useCallback(
     async (input: ProductFormValues) => {
       if (!rpcRef.current) {
-        throw new Error("Backend not ready yet.");
+        throw new Error(t("Backend not ready yet."));
       }
 
       const request = rpcRef.current.request(COMMANDS.CREATE_PRODUCT);
@@ -152,22 +155,24 @@ export default function App() {
       const response = await request.reply("utf8");
       const message = parseBackendMessage(response);
       if (message.type !== "RESPONSE") {
-        throw new Error("Unexpected backend response");
+        throw new Error(t("Unexpected backend response"));
       }
 
       if (message.status === "error") {
-        throw new Error(message.error?.message ?? "Failed to create product");
+        throw new Error(
+          message.error?.message ?? t("Failed to create product"),
+        );
       }
 
       await fetchProducts();
     },
-    [fetchProducts],
+    [fetchProducts, t],
   );
 
   const handleUpdateProduct = useCallback(
     async (productId: string, input: ProductFormValues) => {
       if (!rpcRef.current) {
-        throw new Error("Backend not ready yet.");
+        throw new Error(t("Backend not ready yet."));
       }
 
       setPendingUpdateId(productId);
@@ -188,11 +193,13 @@ export default function App() {
         const response = await request.reply("utf8");
         const message = parseBackendMessage(response);
         if (message.type !== "RESPONSE") {
-          throw new Error("Unexpected backend response");
+          throw new Error(t("Unexpected backend response"));
         }
 
         if (message.status === "error") {
-          throw new Error(message.error?.message ?? "Failed to update product");
+          throw new Error(
+            message.error?.message ?? t("Failed to update product"),
+          );
         }
 
         await fetchProducts();
@@ -200,14 +207,14 @@ export default function App() {
         setError(
           updateError instanceof Error
             ? updateError.message
-            : "Unable to update product right now.",
+            : t("Unable to update product right now."),
         );
         throw updateError;
       } finally {
         setPendingUpdateId(null);
       }
     },
-    [fetchProducts],
+    [fetchProducts, t],
   );
 
   const handleDeleteProduct = useCallback(
@@ -228,11 +235,13 @@ export default function App() {
         const response = await request.reply("utf8");
         const message = parseBackendMessage(response);
         if (message.type !== "RESPONSE") {
-          throw new Error("Unexpected backend response");
+          throw new Error(t("Unexpected backend response"));
         }
 
         if (message.status === "error") {
-          throw new Error(message.error?.message ?? "Failed to delete product");
+          throw new Error(
+            message.error?.message ?? t("Failed to delete product"),
+          );
         }
 
         await fetchProducts();
@@ -240,13 +249,13 @@ export default function App() {
         setError(
           deleteError instanceof Error
             ? deleteError.message
-            : "Unable to delete product right now.",
+            : t("Unable to delete product right now."),
         );
       } finally {
         setPendingDeleteId(null);
       }
     },
-    [fetchProducts],
+    [fetchProducts, t],
   );
 
   const renderProductItem = useCallback<ListRenderItem<Item>>(
@@ -278,14 +287,16 @@ export default function App() {
 
   const listHeader = (
     <View className="w-full items-center">
-      <Text className="text-xl font-bold text-slate-900">Store Catalog</Text>
+      <Text className="text-xl font-bold text-slate-900">
+        {t("Store Catalog")}
+      </Text>
       {loading ? (
         <Text className="mt-4 text-base text-slate-500">
-          Loading products from the Bare backend...
+          {t("Loading products from the Bare backend...")}
         </Text>
       ) : error ? (
         <Text className="mt-4 text-base text-red-500">
-          {`Backend error: ${error}`}
+          {t("Backend error: {message}", { message: error })}
         </Text>
       ) : null}
       <View className="mt-5 w-full max-w-[460px]">
@@ -299,7 +310,7 @@ export default function App() {
     !loading && !error ? (
       <View className="w-full">
         <Text className="mt-4 text-base text-slate-500">
-          No products available yet.
+          {t("No products available yet.")}
         </Text>
       </View>
     ) : null;
@@ -322,5 +333,13 @@ export default function App() {
         ListEmptyComponent={listEmptyComponent}
       />
     </View>
+  );
+}
+
+export default function App() {
+  return (
+    <I18nProvider>
+      <StoreCatalogScreen />
+    </I18nProvider>
   );
 }

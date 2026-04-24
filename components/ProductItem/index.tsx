@@ -1,7 +1,14 @@
 import { ProductItem as Item } from "@/model/ProductItem";
+import {
+  type Language,
+  localeTagForLanguage,
+  useAppLanguage,
+  useTranslate,
+} from "@/utils/i18n";
 import { useCallback, useMemo, useState } from "react";
 import { Pressable, Text, View } from "react-native";
 import ProductForm, { type ProductFormValues } from "../ProductForm";
+import translations from "./translations";
 
 interface ProductItemProps {
   item: Item;
@@ -19,7 +26,12 @@ export default function ProductItem({
   updating = false,
 }: ProductItemProps) {
   const [editing, setEditing] = useState(false);
-  const formattedPrice = useMemo(() => formatPrice(item.price), [item.price]);
+  const language = useAppLanguage();
+  const t = useTranslate(translations);
+  const formattedPrice = useMemo(
+    () => formatPrice(item.price, language),
+    [item.price, language],
+  );
   const canDelete = Boolean(onDelete && item.id);
   const canEdit = Boolean(onUpdate && item.id);
 
@@ -74,7 +86,7 @@ export default function ProductItem({
             {formattedPrice}
           </Text>
           <Text className="mt-1 text-sm text-slate-500 dark:text-slate-300">
-            {`${item.stock} in stock`}
+            {t("{count} in stock", { count: item.stock })}
           </Text>
         </View>
       </View>
@@ -88,7 +100,7 @@ export default function ProductItem({
             accessibilityRole="button"
           >
             <Text className="text-xs font-semibold text-blue-600 dark:text-blue-200">
-              Edit
+              {t("Edit")}
             </Text>
           </Pressable>
         ) : null}
@@ -108,7 +120,7 @@ export default function ProductItem({
                   : "text-red-500 dark:text-red-300"
               }`}
             >
-              {deleting ? "Deleting..." : "Delete"}
+              {deleting ? t("Deleting...") : t("Delete")}
             </Text>
           </Pressable>
         ) : null}
@@ -117,9 +129,9 @@ export default function ProductItem({
   );
 }
 
-const formatPrice = (price: number) => {
+const formatPrice = (price: number, language: Language) => {
   try {
-    return new Intl.NumberFormat(undefined, {
+    return new Intl.NumberFormat(localeTagForLanguage(language), {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 2,

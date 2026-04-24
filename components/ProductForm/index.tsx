@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, TextInput, View } from "react-native";
+import { useTranslate } from "@/utils/i18n";
+import translations from "./translations";
 
 export interface ProductFormValues {
   name: string;
@@ -31,6 +33,7 @@ export default function ProductForm({
   onCancel,
   onSubmit,
 }: ProductFormProps) {
+  const t = useTranslate(translations);
   const defaultValues = useMemo<ProductFormFields>(
     () => ({
       name: initialValues?.name ?? "",
@@ -97,11 +100,11 @@ export default function ProductForm({
         setSubmissionError(
           submitError instanceof Error
             ? submitError.message
-            : "Unable to save product right now.",
+            : t("Unable to save product right now."),
         );
       }
     },
-    [mode, onSubmit, reset],
+    [mode, onSubmit, reset, t],
   );
 
   const submitForm = useMemo(
@@ -129,11 +132,11 @@ export default function ProductForm({
           name="name"
           rules={{
             validate: (value) =>
-              value.trim() ? true : "Please provide a product name.",
+              value.trim() ? true : t("Please provide a product name."),
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="Product name"
+              placeholder={t("Product name")}
               placeholderTextColor="#94a3b8"
               className="rounded-md border border-slate-200 bg-white px-3 py-3 text-base"
               value={value}
@@ -154,11 +157,11 @@ export default function ProductForm({
           name="sku"
           rules={{
             validate: (value) =>
-              value.trim() ? true : "Please provide a SKU.",
+              value.trim() ? true : t("Please provide a SKU."),
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
-              placeholder="SKU"
+              placeholder={t("SKU")}
               placeholderTextColor="#94a3b8"
               className="mt-3 rounded-md border border-slate-200 bg-white px-3 py-3 text-base"
               value={value}
@@ -183,14 +186,14 @@ export default function ProductForm({
                 validate: (value) => {
                   const parsed = Number(value.trim());
                   if (!value.trim() || Number.isNaN(parsed) || parsed < 0) {
-                    return "Enter a valid price.";
+                    return t("Enter a valid price.");
                   }
                   return true;
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  placeholder="Price"
+                  placeholder={t("Price")}
                   placeholderTextColor="#94a3b8"
                   className="rounded-md border border-slate-200 bg-white px-3 py-3 text-base"
                   value={value}
@@ -220,14 +223,14 @@ export default function ProductForm({
                     !Number.isInteger(parsed) ||
                     parsed < 0
                   ) {
-                    return "Enter whole stock.";
+                    return t("Enter whole stock.");
                   }
                   return true;
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
-                  placeholder="Stock"
+                  placeholder={t("Stock")}
                   placeholderTextColor="#94a3b8"
                   className="rounded-md border border-slate-200 bg-white px-3 py-3 text-base"
                   value={value}
@@ -257,7 +260,7 @@ export default function ProductForm({
               onPress={onCancel}
             >
               <Text className="text-center text-base font-semibold text-slate-700">
-                Cancel
+                {t("Cancel")}
               </Text>
             </Pressable>
           ) : null}
@@ -270,10 +273,10 @@ export default function ProductForm({
           >
             <Text className="text-center text-base font-semibold text-white">
               {isSubmitting
-                ? "Saving..."
+                ? t("Saving...")
                 : mode === "edit"
-                  ? "Save Product"
-                  : "Add Product"}
+                  ? t("Save Product")
+                  : t("Add Product")}
             </Text>
           </Pressable>
         </View>
