@@ -1,6 +1,7 @@
 import "../global.css";
 
 import RPC from "bare-rpc";
+import { Paths } from "expo-file-system";
 import type { Duplex } from "bare-stream";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, ListRenderItem, Text, View } from "react-native";
@@ -48,6 +49,7 @@ const toProductItem = (product: BackendProduct): Item => {
 };
 
 const BACKEND_FILENAME = "/app.bundle";
+const BACKEND_STORAGE_ROOT = Paths.document.uri;
 
 const parseBackendMessage = (response: unknown): BackendMessage => {
   if (typeof response !== "string") {
@@ -94,7 +96,7 @@ export default function App() {
 
   useEffect(() => {
     const worklet = new Worklet();
-    worklet.start(BACKEND_FILENAME, bundle);
+    worklet.start(BACKEND_FILENAME, bundle, [BACKEND_STORAGE_ROOT]);
 
     const rpc = new RPC(worklet.IPC as unknown as Duplex, () => {});
     rpcRef.current = rpc;

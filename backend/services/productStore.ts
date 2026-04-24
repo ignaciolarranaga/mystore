@@ -51,7 +51,9 @@ export const PRODUCT_RANGE = {
 
 type ProductAutobase = Autobase<ProductOperation & { scope: string }>;
 
-const STORAGE_DIR = join(resolveStorageRoot(), ".mystore", "products");
+const STORAGE_ROOT = resolveStorageRoot();
+const APP_STORAGE_DIR = join(STORAGE_ROOT, ".mystore");
+const PRODUCT_STORAGE_DIR = join(APP_STORAGE_DIR, "products");
 
 export async function getProductsView(
   options: ViewOptions = {},
@@ -206,8 +208,9 @@ let readyPromise: Promise<ProductAutobase> | null = null;
 async function ensureReady(): Promise<ProductAutobase> {
   if (!readyPromise) {
     readyPromise = (async () => {
-      await fs.promises.mkdir(STORAGE_DIR, { recursive: true });
-      store = new Corestore(STORAGE_DIR);
+      await fs.promises.mkdir(APP_STORAGE_DIR, { recursive: true });
+      await fs.promises.mkdir(PRODUCT_STORAGE_DIR, { recursive: true });
+      store = new Corestore(PRODUCT_STORAGE_DIR);
       const namespaced = store.namespace(NAMESPACE);
 
       base = new Autobase(namespaced, null, {
