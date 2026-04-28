@@ -9,5 +9,8 @@
   },
   "include": [
     "backend/**/*.ts"
+  ],
+  "exclude": [
+    "tests/**"
   ]
 }

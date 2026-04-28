@@ -10,6 +10,7 @@
     "ios": "npm run backend:bundle && expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
     "backend:bundle": "tsc -p tsconfig.backend.json && bare-pack --target ios --target android --linked --out app/app.bundle.mjs backend/dist/backend.js",
     "watch:backend": "npm-watch backend:bundle",
     "android:fix": "patch-package"
@@ -64,7 +65,8 @@
     "npm-watch": "^0.13.0",
     "patch-package": "^8.0.1",
     "prettier": "^3.6.2",
-    "typescript": "~5.9.2"
+    "typescript": "~5.9.2",
+    "vitest": "^4.1.5"
   },
   "watch": {
     "backend:bundle": {
