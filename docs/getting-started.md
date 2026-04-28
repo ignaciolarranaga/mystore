@@ -1,61 +1,27 @@
 # Getting Started
 
-## Prerequisites
+mystore is not published to the app stores yet.
 
-Install the project dependencies before running the app:
+## Install the App
 
-```sh
-npm install
-```
+Coming soon.
 
-## Bundle the Backend
+When mystore is published, this page will link to the official app store listings:
 
-The Bare backend source is bundled into `app/app.bundle.mjs` for the React Native app:
+- App Store for iPhone and iPad
+- Google Play for Android devices
 
-```sh
-npm run backend:bundle
-```
+## First Use
 
-`backend/dist/**` and `app/app.bundle.mjs` are generated artifacts. Do not edit them directly.
+After installing the app, open mystore to start from the product catalog.
 
-## Run on iOS
+The current catalog workflow is:
 
-```sh
-npm run ios
-```
+1. Add a product with its name, SKU, price, and stock.
+2. Review products in the catalog list.
+3. Edit product details when inventory or pricing changes.
+4. Delete products that are no longer needed.
 
-## Run on Android
+## Developer Setup
 
-```sh
-npm run android
-```
-
-If Android fails with a `uses-sdk:minSdkVersion` error, reapply the local patch and retry from a clean native build:
-
-```sh
-npm run android:fix
-rm -rf android/app/build android/.gradle .expo .expo-shared
-npx expo run:android
-```
-
-## Watch Backend Changes
-
-During backend development, use:
-
-```sh
-npm run watch:backend
-```
-
-## Read Bare Logs on macOS
-
-```sh
-log stream --level=debug --predicate "subsystem == 'bare'"
-```
-
-## Preview This Documentation
-
-The documentation lives in `docs/` and is designed for GitHub Pages. To preview it locally:
-
-```sh
-npx docsify-cli serve docs
-```
+Developers who want to build mystore from source should use the [Advanced developer setup](/advanced/developer-setup.md).

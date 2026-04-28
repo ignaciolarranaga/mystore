@@ -4,6 +4,7 @@
   - [Getting Started](/getting-started.md)
 
 - Advanced
+  - [Developer Setup](/advanced/developer-setup.md)
   - [Architecture](/advanced/architecture.md)
   - [Technical Decisions](/advanced/technical-decisions.md)
   - ITDs

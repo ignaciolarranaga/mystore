@@ -24,6 +24,7 @@ mystore is for people who need a lightweight product catalog they can operate fr
 ## Documentation Map
 
 - [Features](/features.md) describes the current user-facing capabilities.
-- [Getting Started](/getting-started.md) explains how to install, bundle, and run the app.
+- [Getting Started](/getting-started.md) explains how users will install and start using the app.
+- [Developer Setup](/advanced/developer-setup.md) explains how developers can build the app from source.
 - [Architecture](/advanced/architecture.md) explains the system using C4 diagrams.
 - [Technical Decisions](/advanced/technical-decisions.md) captures the important technical choices behind the product.
