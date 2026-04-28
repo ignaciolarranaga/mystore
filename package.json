@@ -6,8 +6,8 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
+    "android": "npm run backend:bundle && expo run:android",
+    "ios": "npm run backend:bundle && expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
     "backend:bundle": "tsc -p tsconfig.backend.json && bare-pack --target ios --target android --linked --out app/app.bundle.mjs backend/dist/backend.js",
