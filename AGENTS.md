@@ -10,6 +10,7 @@ This app is an Expo React Native product catalog with a Bare worklet backend. Th
 - The Bare backend must use an app-owned storage path passed from the React Native side. Avoid falling back to Android paths such as `/data`; those are not safe writable app storage.
 - Backend operation/service changes must be accompanied by integration tests under `tests/integration`. Follow `tests/integration/AGENTS.md` for the test conventions and maintenance rules.
 - Keep UI translations colocated with the screen/component that owns the copy, using the English source text as the translation key. Shared i18n helpers live in `utils/i18n.tsx`.
+- Keep product documentation under `docs/**` up to date when changing user-facing behavior, features, setup instructions, architecture, backend services, storage behavior, or important technical decisions.
 - Keep `AGENTS.md` as the canonical AI-assistant instruction file. Other assistant-specific files should point here instead of duplicating rules.
 
 ## Android Pitfalls

@@ -2,6 +2,18 @@
 
 Minimal React Native store catalog app with an Expo frontend and a Bare backend. Product records are projected into Hyperbee through Autobase/Corestore and accessed from the app through `bare-rpc`.
 
+## Documentation
+
+Product documentation lives under `docs/` and is designed to be published with GitHub Pages from the `main` branch `/docs` folder.
+
+To preview the documentation locally, run:
+
+```sh
+npx docsify-cli serve docs
+```
+
+After GitHub Pages is enabled for the repository, add the published Pages URL or custom domain here.
+
 ## Get started
 
 1. Install dependencies: `npm install`
