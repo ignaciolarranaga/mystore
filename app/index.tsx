@@ -286,16 +286,19 @@ function StoreCatalogScreen() {
   const hasVisibleProducts = !loading && !error && products.length > 0;
 
   const listHeader = (
-    <View className="w-full items-center">
-      <Text className="text-xl font-bold text-slate-900">
+    <View className="w-full items-center" testID="catalog.header">
+      <Text className="text-xl font-bold text-slate-900" testID="catalog.title">
         {t("Store Catalog")}
       </Text>
       {loading ? (
-        <Text className="mt-4 text-base text-slate-500">
+        <Text
+          className="mt-4 text-base text-slate-500"
+          testID="catalog.loading"
+        >
           {t("Loading products from the Bare backend...")}
         </Text>
       ) : error ? (
-        <Text className="mt-4 text-base text-red-500">
+        <Text className="mt-4 text-base text-red-500" testID="catalog.error">
           {t("Backend error: {message}", { message: error })}
         </Text>
       ) : null}
@@ -309,7 +312,7 @@ function StoreCatalogScreen() {
   const listEmptyComponent =
     !loading && !error ? (
       <View className="w-full">
-        <Text className="mt-4 text-base text-slate-500">
+        <Text className="mt-4 text-base text-slate-500" testID="catalog.empty">
           {t("No products available yet.")}
         </Text>
       </View>
@@ -320,6 +323,7 @@ function StoreCatalogScreen() {
   return (
     <View className="flex-1 bg-slate-50">
       <FlatList
+        testID="catalog.product-list"
         data={visibleProducts}
         keyExtractor={keyExtractor}
         renderItem={renderProductItem}

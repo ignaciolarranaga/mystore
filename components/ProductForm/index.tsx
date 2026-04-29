@@ -123,9 +123,10 @@ export default function ProductForm({
     !watchedSku.trim() ||
     !watchedPrice.trim() ||
     !watchedStock.trim();
+  const testIdPrefix = `product-form.${mode}`;
 
   return (
-    <View className="w-full">
+    <View className="w-full" testID={testIdPrefix}>
       <View className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm shadow-slate-800/10">
         <Controller
           control={control}
@@ -143,6 +144,8 @@ export default function ProductForm({
               onChangeText={onChange}
               onBlur={onBlur}
               autoCapitalize="words"
+              selectTextOnFocus={mode === "edit"}
+              testID={`${testIdPrefix}.name`}
             />
           )}
         />
@@ -168,6 +171,8 @@ export default function ProductForm({
               onChangeText={(val) => onChange(val.toUpperCase())}
               onBlur={onBlur}
               autoCapitalize="characters"
+              selectTextOnFocus={mode === "edit"}
+              testID={`${testIdPrefix}.sku`}
             />
           )}
         />
@@ -200,6 +205,8 @@ export default function ProductForm({
                   onChangeText={onChange}
                   onBlur={onBlur}
                   keyboardType="decimal-pad"
+                  selectTextOnFocus={mode === "edit"}
+                  testID={`${testIdPrefix}.price`}
                 />
               )}
             />
@@ -237,6 +244,8 @@ export default function ProductForm({
                   onChangeText={onChange}
                   onBlur={onBlur}
                   keyboardType="number-pad"
+                  selectTextOnFocus={mode === "edit"}
+                  testID={`${testIdPrefix}.stock`}
                 />
               )}
             />
@@ -258,6 +267,7 @@ export default function ProductForm({
               className="flex-1 rounded-md border border-slate-300 px-4 py-3"
               disabled={disabled || isSubmitting}
               onPress={onCancel}
+              testID={`${testIdPrefix}.cancel`}
             >
               <Text className="text-center text-base font-semibold text-slate-700">
                 {t("Cancel")}
@@ -270,6 +280,7 @@ export default function ProductForm({
             } ${submitDisabled ? "bg-slate-300" : "bg-blue-600"}`}
             disabled={submitDisabled}
             onPress={submitForm}
+            testID={`${testIdPrefix}.submit`}
           >
             <Text className="text-center text-base font-semibold text-white">
               {isSubmitting

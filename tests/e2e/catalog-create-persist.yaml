@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "product-form.create.submit"
+    timeout: 15000
+- tapOn:
+    id: "product-form.create.name"
+- inputText: "E2E Create Persist Product"
+- tapOn:
+    id: "product-form.create.sku"
+- inputText: "E2E-CREATE-001"
+- tapOn:
+    id: "product-form.create.price"
+- inputText: "12.5"
+- tapOn:
+    id: "product-form.create.stock"
+- inputText: "7"
+- tapOn:
+    id: "product-form.create.submit"
+- extendedWaitUntil:
+    visible:
+      text: "E2E Create Persist Product"
+    timeout: 15000
+- assertVisible:
+    text: "E2E-CREATE-001"
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "E2E Create Persist Product"
+    timeout: 15000
+- assertVisible:
+    text: "E2E-CREATE-001"

@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "catalog.title"
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      text: "Demo Coffee Beans"
+    timeout: 15000
+- assertVisible:
+    text: "COFFEE-001"

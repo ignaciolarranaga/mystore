@@ -12,6 +12,7 @@ export interface BackendIntegrationHarness {
     deleteProductHandler: typeof import("../../../backend/services/deleteProduct").deleteProductHandler;
     getProductHandler: typeof import("../../../backend/services/getProduct").getProductHandler;
     listProductsHandler: typeof import("../../../backend/services/listProducts").listProductsHandler;
+    seedProduct: typeof import("../../../backend/services/productStore").seedProduct;
     updateProductHandler: typeof import("../../../backend/services/updateProduct").updateProductHandler;
   };
   cleanup: () => Promise<void>;
@@ -38,12 +39,14 @@ export async function createBackendIntegrationHarness(): Promise<BackendIntegrat
     deleteProduct,
     getProduct,
     listProducts,
+    productStore,
     updateProduct,
   ] = await Promise.all([
     import("../../../backend/services/createProduct"),
     import("../../../backend/services/deleteProduct"),
     import("../../../backend/services/getProduct"),
     import("../../../backend/services/listProducts"),
+    import("../../../backend/services/productStore"),
     import("../../../backend/services/updateProduct"),
   ]);
 
@@ -54,6 +57,7 @@ export async function createBackendIntegrationHarness(): Promise<BackendIntegrat
       deleteProductHandler: deleteProduct.deleteProductHandler,
       getProductHandler: getProduct.getProductHandler,
       listProductsHandler: listProducts.listProductsHandler,
+      seedProduct: productStore.seedProduct,
       updateProductHandler: updateProduct.updateProductHandler,
     },
     async cleanup() {

@@ -34,6 +34,7 @@ export default function ProductItem({
   );
   const canDelete = Boolean(onDelete && item.id);
   const canEdit = Boolean(onUpdate && item.id);
+  const testIdPrefix = `product-item.${item.sku}`;
 
   const handleDelete = useCallback(() => {
     if (!canDelete || !item.id || !onDelete) {
@@ -57,7 +58,10 @@ export default function ProductItem({
 
   if (editing) {
     return (
-      <View className="mb-3 rounded-lg border border-blue-100 bg-white p-3 shadow-sm">
+      <View
+        className="mb-3 rounded-lg border border-blue-100 bg-white p-3 shadow-sm"
+        testID={`${testIdPrefix}.editing`}
+      >
         <ProductForm
           mode="edit"
           disabled={updating}
@@ -70,7 +74,10 @@ export default function ProductItem({
   }
 
   return (
-    <View className="mb-3 rounded-lg border border-slate-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+    <View
+      className="mb-3 rounded-lg border border-slate-100 bg-white px-4 py-3 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+      testID={testIdPrefix}
+    >
       <View className="flex-row items-start justify-between gap-3">
         <View className="flex-1">
           <Text className="text-base font-semibold text-slate-900 dark:text-white">
@@ -98,6 +105,7 @@ export default function ProductItem({
             onPress={() => setEditing(true)}
             disabled={deleting || updating}
             accessibilityRole="button"
+            testID={`${testIdPrefix}.edit`}
           >
             <Text className="text-xs font-semibold text-blue-600 dark:text-blue-200">
               {t("Edit")}
@@ -112,6 +120,7 @@ export default function ProductItem({
             onPress={handleDelete}
             disabled={deleting || updating}
             accessibilityRole="button"
+            testID={`${testIdPrefix}.delete`}
           >
             <Text
               className={`text-xs font-semibold ${

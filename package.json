@@ -11,6 +11,13 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e:ios:build": "npm run backend:bundle && npx expo run:ios --configuration Release --no-bundler",
+    "test:e2e:android:build": "npm run backend:bundle && npm run android:fix && npx expo run:android --variant release --no-bundler",
+    "test:e2e:ios": "maestro test --platform ios -e APP_ID=com.ignaciolarranaga.mystore tests/e2e",
+    "test:e2e:android": "maestro test --platform android -e APP_ID=com.ignaciolarranaga.mystore tests/e2e",
+    "test:e2e:ios:all": "npm run test:e2e:ios:build && npm run test:e2e:ios",
+    "test:e2e:android:all": "npm run test:e2e:android:build && npm run test:e2e:android",
+    "test:e2e:all": "npm run test:e2e:ios:all && npm run test:e2e:android:all",
     "backend:bundle": "tsc -p tsconfig.backend.json && bare-pack --target ios --target android --linked --out app/app.bundle.mjs backend/dist/backend.js",
     "watch:backend": "npm-watch backend:bundle",
     "android:fix": "patch-package"

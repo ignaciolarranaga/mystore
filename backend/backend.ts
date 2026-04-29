@@ -71,6 +71,18 @@ const respond = (
   );
 };
 
+try {
+  await seedProduct({
+    id: "product-demo",
+    name: "Demo Coffee Beans",
+    sku: "COFFEE-001",
+    price: 14.99,
+    stock: 24,
+  });
+} catch (error) {
+  console.error("Failed to seed default product", error);
+}
+
 const rpc = new RPC(IPC, async (request: RPC.IncomingRequest) => {
   const entry = handlers[request.command as CommandCode];
 
@@ -102,15 +114,3 @@ const rpc = new RPC(IPC, async (request: RPC.IncomingRequest) => {
 });
 
 export default rpc;
-
-try {
-  await seedProduct({
-    id: "product-demo",
-    name: "Demo Coffee Beans",
-    sku: "COFFEE-001",
-    price: 14.99,
-    stock: 24,
-  });
-} catch (error) {
-  console.error("Failed to seed default product", error);
-}

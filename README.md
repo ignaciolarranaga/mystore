@@ -33,4 +33,5 @@ If the Android build fails with a `uses-sdk:minSdkVersion` error (e.g. after ins
 ## Hints
 
 - Starting watching changes on the backend: `npm run watch:backend`
+- Run user-level e2e tests with Maestro: `npm run test:e2e:ios:all` or `npm run test:e2e:android:all`
 - Getting the Log on Mac: `log stream --level=debug --predicate "subsystem == 'bare'"`

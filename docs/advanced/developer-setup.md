@@ -40,6 +40,28 @@ rm -rf android/app/build android/.gradle .expo .expo-shared
 npx expo run:android
 ```
 
+## Run E2E Tests
+
+The end-to-end suite uses Maestro and lives under `tests/e2e`. Install Maestro locally before running the suite:
+
+```sh
+curl -Ls "https://get.maestro.mobile.dev" | bash
+```
+
+Run the iOS suite against a booted simulator:
+
+```sh
+npm run test:e2e:ios:all
+```
+
+Run the Android suite against a running emulator:
+
+```sh
+npm run test:e2e:android:all
+```
+
+The `:all` scripts install release-style app builds with the JavaScript bundle embedded, so the e2e run does not require a separate Metro server. The e2e flows verify product create, update, delete, and persistence after app relaunch through the real mobile UI and Bare backend.
+
 ## Watch Backend Changes
 
 During backend development, use:
