@@ -1,0 +1,97 @@
+appId: ${APP_ID}
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible:
+      id: "catalog.title"
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      text: "Demo Coffee Beans"
+    timeout: 15000
+- assertVisible:
+    text: "COFFEE-001"
+
+- extendedWaitUntil:
+    visible:
+      id: "product-form.create.submit"
+    timeout: 15000
+- tapOn:
+    id: "product-form.create.name"
+- inputText: "E2E CRUD Original Product"
+- tapOn:
+    id: "product-form.create.sku"
+- inputText: "E2E-CRUD-001"
+- tapOn:
+    id: "product-form.create.price"
+- inputText: "12.5"
+- tapOn:
+    id: "product-form.create.stock"
+- inputText: "7"
+- tapOn:
+    id: "product-form.create.submit"
+- extendedWaitUntil:
+    visible:
+      text: "E2E CRUD Original Product"
+    timeout: 15000
+- assertVisible:
+    text: "E2E-CRUD-001"
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "E2E CRUD Original Product"
+    timeout: 15000
+- assertVisible:
+    text: "E2E-CRUD-001"
+
+- tapOn:
+    id: "product-item.E2E-CRUD-001.edit"
+- extendedWaitUntil:
+    visible:
+      id: "product-form.edit.submit"
+    timeout: 10000
+- tapOn:
+    id: "product-form.edit.name"
+- inputText: "E2E CRUD Updated Product"
+- tapOn:
+    id: "product-form.edit.price"
+- inputText: "25.75"
+- tapOn:
+    id: "product-form.edit.stock"
+- inputText: "9"
+- tapOn:
+    id: "product-form.edit.submit"
+- extendedWaitUntil:
+    visible:
+      text: "E2E CRUD Updated Product"
+    timeout: 15000
+- assertNotVisible:
+    text: "E2E CRUD Original Product"
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      text: "E2E CRUD Updated Product"
+    timeout: 15000
+- assertNotVisible:
+    text: "E2E CRUD Original Product"
+
+- tapOn:
+    id: "product-item.E2E-CRUD-001.delete"
+- extendedWaitUntil:
+    notVisible:
+      text: "E2E CRUD Updated Product"
+    timeout: 15000
+
+- stopApp
+- launchApp
+- extendedWaitUntil:
+    visible:
+      id: "catalog.title"
+    timeout: 15000
+- assertNotVisible:
+    text: "E2E CRUD Updated Product"

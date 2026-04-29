@@ -60,7 +60,7 @@ Run the Android suite against a running emulator:
 npm run test:e2e:android:all
 ```
 
-The `:all` scripts install release-style app builds with the JavaScript bundle embedded, so the e2e run does not require a separate Metro server. The e2e flows verify product create, update, delete, and persistence after app relaunch through the real mobile UI and Bare backend.
+The `:all` scripts install release-style app builds with the JavaScript bundle embedded, so the e2e run does not require a separate Metro server. The e2e flow verifies the critical product journey: initial catalog load, create, update, delete, and persistence after app relaunch through the real mobile UI and Bare backend.
 
 ## Watch Backend Changes
 
