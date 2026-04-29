@@ -207,31 +207,75 @@ let readyPromise: Promise<ProductAutobase> | null = null;
 
 async function ensureReady(): Promise<ProductAutobase> {
   if (!readyPromise) {
-    readyPromise = (async () => {
-      await fs.promises.mkdir(APP_STORAGE_DIR, { recursive: true });
-      await fs.promises.mkdir(PRODUCT_STORAGE_DIR, { recursive: true });
-      store = new Corestore(PRODUCT_STORAGE_DIR);
-      const namespaced = store.namespace(NAMESPACE);
-
-      base = new Autobase(namespaced, null, {
-        valueEncoding: "json",
-        open: openProductsView,
-        apply: applyProductOperations,
-      });
-
-      await base.ready();
-      productsView = base.view;
-      await productsView!.ready();
-      ensureTeardownHook();
-      await base.update();
-
-      return base;
-    })();
+    readyPromise = openStoreWithRecovery();
   }
 
   await readyPromise;
   return base!;
 }
+
+async function openStoreWithRecovery(): Promise<ProductAutobase> {
+  try {
+    return await openStore();
+  } catch (error) {
+    if (!isRecoverableStorageError(error)) {
+      throw error;
+    }
+
+    await resetProductStoreState();
+    await removeProductStorage();
+    return openStore();
+  }
+}
+
+async function openStore(): Promise<ProductAutobase> {
+  await fs.promises.mkdir(APP_STORAGE_DIR, { recursive: true });
+  await fs.promises.mkdir(PRODUCT_STORAGE_DIR, { recursive: true });
+  store = new Corestore(PRODUCT_STORAGE_DIR);
+  const namespaced = store.namespace(NAMESPACE);
+
+  base = new Autobase(namespaced, null, {
+    valueEncoding: "json",
+    open: openProductsView,
+    apply: applyProductOperations,
+  });
+
+  await base.ready();
+  productsView = base.view;
+  await productsView!.ready();
+  ensureTeardownHook();
+  await base.update();
+
+  return base;
+}
+
+async function resetProductStoreState(): Promise<void> {
+  try {
+    await closeStore();
+  } finally {
+    store = null;
+    base = null;
+    productsView = null;
+    readyPromise = null;
+    closing = false;
+  }
+}
+
+async function removeProductStorage(): Promise<void> {
+  await fs.promises.rm(PRODUCT_STORAGE_DIR, { recursive: true, force: true });
+}
+
+function isRecoverableStorageError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.toLowerCase().includes("invalid device file") &&
+    message.toLowerCase().includes("modified")
+  );
+}
+
+export const productStoreTestInternals = {
+  isRecoverableStorageError,
+};
 
 function openProductsView(autoStore: any): Hyperbee {
   const core = autoStore.get({ name: VIEW_NAME });

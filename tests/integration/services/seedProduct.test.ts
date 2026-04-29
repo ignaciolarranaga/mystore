@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { productStoreTestInternals } from "../../../backend/services/productStore";
 import {
   createBackendIntegrationHarness,
   type BackendIntegrationHarness,
@@ -37,5 +38,19 @@ describe("seedProduct integration", () => {
       price: 14.99,
       stock: 24,
     });
+  });
+
+  it("recognizes the Android invalid device file corruption error as recoverable", () => {
+    expect(
+      productStoreTestInternals.isRecoverableStorageError(
+        new Error("invalid device file, was modified"),
+      ),
+    ).toBe(true);
+
+    expect(
+      productStoreTestInternals.isRecoverableStorageError(
+        new Error("permission denied"),
+      ),
+    ).toBe(false);
   });
 });
