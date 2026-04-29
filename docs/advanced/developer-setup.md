@@ -60,8 +60,6 @@ Run the Android suite against a running emulator:
 npm run test:e2e:android:all
 ```
 
-The Android e2e build defaults to an `arm64-v8a` emulator APK to avoid installing an oversized universal APK. It uninstalls any previous app copy, installs the APK without auto-launching the app, then clears app data before Maestro starts the flow. For an x86_64 emulator, run `E2E_ANDROID_ARCHITECTURES=x86_64 npm run test:e2e:android:all`.
-
 The `:all` scripts install release-style app builds with the JavaScript bundle embedded, so the e2e run does not require a separate Metro server. The e2e flows verify product create, update, delete, and persistence after app relaunch through the real mobile UI and Bare backend.
 
 ## Watch Backend Changes
